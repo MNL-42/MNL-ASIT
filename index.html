@@ -1,11 +1,64 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080b12"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="assets/icon.svg"><link rel="stylesheet" href="styles.css"><title>TON SAAS AI — MNL</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1"></script><script defer src="config.js"></script><script defer src="app.js"></script></head><body><aside class="side" id="side"><div class="brand">TON SAAS <b>AI</b><small>MNL CONTROL CENTER</small></div><div class="workspace">● Espace MNL · Administrateur</div><p class="navlabel">ESPACE DE TRAVAIL</p><nav><a class="active" data-view="home">◫ Vue générale</a><a data-view="transactions">⇄ Transactions</a><a data-view="transfers">↗ Virements</a><a data-view="map">◎ Carte 3D</a><a data-view="projects">▦ Mes projets</a></nav><p class="navlabel">PRÉFÉRENCES</p><nav><a data-view="settings">⚙ Personnalisation</a></nav><div class="profile">M · Manasse <small>Administrateur</small></div></aside><main class="main"><header class="top"><button id="menu">☰</button><span>Espace MNL / <b id="crumb">Vue générale</b></span><span id="status">● Configuration requise</span><select id="currencyView" aria-label="Devise du tableau de bord"><option value="USD">USD · Dollar</option><option value="CDF">CDF · Franc congolais</option></select></header>
-<section class="view active" id="home"><div class="hero"><div><small>✦ TON ESPACE DE PILOTAGE</small><h1>Tout se dessine<span>.</span></h1><p>Vos opérations, vos projets et votre activité en un seul espace.</p></div><small id="today"></small></div><article class="balance"><small>SOLDE TOTAL ENREGISTRÉ</small><strong id="balance">— €</strong><p>Calculé à partir de vos données réelles</p><div class="balance-bottom"><span>Entrées <b id="income">—</b></span><span>Sorties <b id="expense">—</b></span><button data-modal="txModal">+ Nouvelle opération</button></div><i class="orb"></i></article><div class="metrics"><article><small>Transactions</small><b id="txCount">0</b><p>Opérations enregistrées</p></article><article><small>Virements</small><b id="trCount">0</b><p>Virements consignés</p></article><article><small>Dépôts GitHub</small><b id="repoCount">—</b><p>Dépôts publics</p></article><article><small>Connexion</small><b id="connectStat">—</b><p>Base de données</p></article></div><div class="grid"><article class="panel"><h2>Flux financier</h2><p>Entrées et sorties par mois</p><canvas id="chart"></canvas><small id="chartEmpty">Ajoutez vos opérations pour afficher les données réelles.</small></article><article class="panel"><h2>Dernières opérations</h2><p>Mouvements récents</p><div id="recent">Aucune opération enregistrée.</div></article></div><div class="grid"><article class="panel"><h2>Carte de réseau 3D</h2><p>Visualisation de votre espace</p><div class="globe-stage"><div class="orbit"></div><div class="orbit two"></div><div class="globe"></div><small>MNL NETWORK · VISUALISATION</small></div></article><article class="panel"><h2>Vos dépôts GitHub</h2><p>Projets publics de MNL-42</p><div id="repoPreview">Chargement…</div></article></div></section>
-<section class="view" id="transactions"><div class="hero"><div><small>GESTION FINANCIÈRE</small><h1>Transactions<span>.</span></h1><p>Consignez vos entrées et sorties réelles.</p></div><button data-modal="txModal">+ Ajouter</button></div><article class="panel"><input id="search" placeholder="Rechercher…"><select id="filter"><option value="all">Tous</option><option value="income">Entrées</option><option value="expense">Sorties</option></select><div id="txTable"></div></article></section>
-<section class="view" id="transfers"><div class="hero"><div><small>MOUVEMENTS</small><h1>Virements<span>.</span></h1><p>Journal des virements consignés. Aucun transfert bancaire n'est exécuté.</p></div><button data-modal="trModal">+ Nouveau virement</button></div><article class="panel"><div id="trTable"></div></article></section>
-<section class="view" id="map"><div class="hero"><div><small>VISUALISATION</small><h1>Carte en 3D<span>.</span></h1><p>Globe décoratif interactif de l'espace MNL.</p></div></div><article class="panel"><div class="globe-stage large"><div class="orbit"></div><div class="orbit two"></div><div class="globe"></div></div></article></section>
-<section class="view" id="projects"><div class="hero"><div><small>ÉCOSYSTÈME MNL</small><h1>Mes projets<span>.</span></h1><p>Dépôts récupérés depuis l'API publique GitHub.</p></div><a href="https://github.com/MNL-42" target="_blank">Ouvrir GitHub ↗</a></div><div class="repos" id="repos"></div><p class="hint">Les dépôts privés nécessitent une authentification GitHub côté serveur.</p></section>
-<section class="view" id="settings"><div class="hero"><div><small>VOTRE IDENTITÉ VISUELLE</small><h1>Personnalisation<span>.</span></h1><p>Un clic, une couleur.</p></div></div><article class="panel"><h2>Devise d’affichage</h2><p>Les opérations sont filtrées par devise, sans conversion automatique.</p><select id="currencySetting"><option value="USD">Dollar américain (USD)</option><option value="CDF">Franc congolais (CDF)</option></select><h2>Couleur principale</h2><div class="swatches"><button data-color="#55e6c1" style="background:#55e6c1"></button><button data-color="#7c9cff" style="background:#7c9cff"></button><button data-color="#c49aff" style="background:#c49aff"></button><button data-color="#ffc477" style="background:#ffc477"></button><button data-color="#ff8fa3" style="background:#ff8fa3"></button></div><h2>Connexion Supabase</h2><p id="dbText">Configurez l'URL et la clé publique dans config.js.</p><button id="refresh">Vérifier la connexion</button><button id="export">Exporter les données CSV</button></article></section><footer>TON SAAS AI · MNL CONTROL CENTER · <span id="year"></span></footer></main>
-<div class="modal" id="txModal"><form class="form" id="txForm"><button type="button" class="close" data-close>×</button><h2>Nouvelle transaction</h2><label>Type<select name="kind"><option value="income">Entrée</option><option value="expense">Sortie</option></select></label><label>Libellé<input name="label" required maxlength="100"></label><label>Catégorie<input name="category" maxlength="60"></label><label>Devise<select name="currency"><option value="USD">Dollar américain (USD)</option><option value="CDF">Franc congolais (CDF)</option></select></label><label>Montant<input name="amount" type="number" min=".01" step=".01" required></label><label>Date<input name="date" type="date" required></label><button>Enregistrer</button><small id="txMsg"></small></form></div>
-<div class="modal" id="trModal"><form class="form" id="trForm"><button type="button" class="close" data-close>×</button><h2>Enregistrer un virement</h2><label>Destinataire<input name="recipient" required></label><label>Référence<input name="reference"></label><label>Devise<select name="currency"><option value="USD">Dollar américain (USD)</option><option value="CDF">Franc congolais (CDF)</option></select></label><label>Montant<input name="amount" type="number" min=".01" step=".01" required></label><label>Date<input name="date" type="date" required></label><button>Enregistrer</button><small id="trMsg"></small></form></div>
-<div class="modal" id="authModal"><form class="form" id="authForm"><h2>Connexion à votre espace</h2><label>E-mail<input name="email" type="email" required></label><label>Mot de passe<input name="password" type="password" minlength="8" required></label><button>Se connecter</button><button type="button" id="signup">Créer mon compte</button><small id="authMsg"></small></form></div></body></html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NACRE</title>
+  <meta name="description" content="NACRE · ton tableau de bord financier en verre dépoli.">
+  <meta name="theme-color" content="#17120e">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231aa58a'/%3E%3Cpath d='M32 13s-12 13-12 21a12 12 0 0 0 24 0c0-8-12-21-12-21z' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="bg" aria-hidden="true"></div>
+
+  <main id="auth" hidden></main>
+  <main id="setup" hidden></main>
+
+  <div id="stage" hidden>
+    <div id="panel">
+      <header class="topbar glass">
+        <div class="who"><span class="avatar" id="avatar" aria-hidden="true"></span><span class="hello">Bienvenue, <b id="whoName"></b></span></div>
+        <div class="cmd" id="cmd" role="search">
+          <span class="orb" aria-hidden="true"></span>
+          <input id="cmdIn" type="text" placeholder="Demande à NACRE…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Assistant NACRE : écris une commande, par exemple « Envoie 250 € à Clara »">
+          <kbd id="kbd"></kbd>
+          <div class="pal" id="pal" hidden role="listbox"></div>
+        </div>
+        <div class="tb-r">
+          <button type="button" class="round" data-act="bell" aria-label="Notifications"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><i id="bellDot" hidden></i></button>
+          <button type="button" class="round dark" data-act="focus-cmd" aria-label="Rechercher"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+        </div>
+        <div class="pop glass" id="bellPop" hidden></div>
+      </header>
+
+      <nav class="rail glass" id="rail" aria-label="Navigation"></nav>
+
+      <main class="page glass" id="page">
+        <div id="view" tabindex="-1"></div>
+      </main>
+
+      <nav class="dock glass" id="dock" aria-label="Onglets"></nav>
+      <div class="quick glass" id="quick" hidden></div>
+    </div>
+  </div>
+
+  <div id="modals"></div>
+  <div id="toasts" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4" crossorigin="anonymous"></script>
+  <script src="ui.js"></script>
+  <script src="data.js"></script>
+  <script src="reports.js"></script>
+  <script src="cards.js"></script>
+  <script src="palette.js"></script>
+  <script src="forms.js"></script>
+  <script src="views.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
